@@ -3,9 +3,9 @@ Host: localhost:8080
 Content-Type: application/json
 
 {
-  "name": "koda",
-  "email": "koda@gmail.com",
-  "password": "koda123"
+  "name": "yassir",
+  "email": "yassir@gmail.com",
+  "password": "yassir123"
 }
 
 ###
@@ -19,12 +19,12 @@ Content-Type: application/json
 }
 
 ###
-GET /users?search=
+GET /users?search=&sortby=name
 Host: localhost:8080 
 Content-Type: application/json
 
 ###
-POST /users 
+POST /users
 Host: localhost:8080 
 Content-Type: application/json
 

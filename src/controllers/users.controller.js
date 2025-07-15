@@ -6,9 +6,9 @@ const userModel = require("../models/users.model");
  * @param {import("express").Response} res
  */
 exports.listAllUsers = function (req, res) {
-  const query = req.query.search;
-  const users = userModel.findUserByName(query);
+  const {search, sortby} = req.query;
 
+  const users = userModel.findUserByName(search, sortby);
   if (!users) {
     return res.status(http.HTTP_STATUS_INTERNAL_SERVER_ERROR).json({
       success: false,
@@ -134,10 +134,10 @@ exports.userDetail = function (req, res) {
       message: `user with id: ${id} doesnt exist!`,
     });
   }
-  
-   return res.status(http.HTTP_STATUS_BAD_REQUEST).json({
-      success: true,
-      message: `retrieve user with id: ${id} successfully!`,
-      results: userModel.users[index]
-    });
+
+  return res.status(http.HTTP_STATUS_BAD_REQUEST).json({
+    success: true,
+    message: `retrieve user with id: ${id} successfully!`,
+    results: userModel.users[index],
+  });
 };

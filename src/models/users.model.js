@@ -1,9 +1,22 @@
 const users = [];
 
-function findUserByName(query) {
-  let filtered = users.filter(x => x.name.includes(query))
-  return filtered;
-};
+function findUserByName(query, sort) {
+  let filtered = users  
+  switch (sort) {
+    case "name":
+      filtered = users.filter((x) => x.name.includes(query));
+      filtered.sort((x, y) => x.name.localeCompare(y.name) )
+      break;
+    case "email":
+      filtered = users.filter((x) => x.name.includes(query));
+      filtered.sort((x, y) => x.email.localeCompare(y.email) )
+      break;
+    default:
+      filtered = users.filter((x) => x.name.includes(query));
+      break;
+  }
+  return filtered
+}
 
 function isEmailAvailable(req) {
   const notAvailable = users.some((user) => user.email == req.email);
@@ -11,7 +24,7 @@ function isEmailAvailable(req) {
     return false;
   }
   return true;
-};
+}
 
 function createNewUser(req) {
   users.push({
@@ -21,48 +34,46 @@ function createNewUser(req) {
     password: req.password,
   });
   return true;
-};
+}
 
-function getUserIndex(userId){
+function getUserIndex(userId) {
   let idx = users.findIndex((user) => {
     return user.id == userId;
   });
-  return idx
+  return idx;
 }
 
 function deleteUserById(idx) {
-  users.splice(idx, 1)
+  users.splice(idx, 1);
   return true;
-};
+}
 
 function updateUserById(idx, req) {
-  
-  let oldName = users[idx].name
-  let oldEmail = users[idx].email
-  let oldPassword = users[idx].password
-  
-  let newEmail = oldEmail
-  let newName = oldName
-  let newPassword = oldPassword
+  let oldName = users[idx].name;
+  let oldEmail = users[idx].email;
+  let oldPassword = users[idx].password;
+
+  let newEmail = oldEmail;
+  let newName = oldName;
+  let newPassword = oldPassword;
 
   if (req.name != "" || req.name != undefined) {
-    newName = req.name
+    newName = req.name;
   }
 
   if (req.email != "" || req.email != undefined) {
-    newEmail = req.email
+    newEmail = req.email;
   }
-  if (req.password != "" || req.password != undefined ) {
-    newPassword = req.password
+  if (req.password != "" || req.password != undefined) {
+    newPassword = req.password;
   }
 
-  users[idx].name = newName
-  users[idx].email = newEmail
-  users[idx].password = newPassword
+  users[idx].name = newName;
+  users[idx].email = newEmail;
+  users[idx].password = newPassword;
 
   return true;
-};
-
+}
 
 module.exports = {
   users,
@@ -71,5 +82,5 @@ module.exports = {
   createNewUser,
   getUserIndex,
   deleteUserById,
-  updateUserById
-}
+  updateUserById,
+};
