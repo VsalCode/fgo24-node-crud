@@ -14,7 +14,15 @@ Content-Type: application/json
 }
 
 ###
-DELETE /users/2 
+DELETE /users/3 
 Host: localhost:8080 
 Content-Type: application/json
 
+###
+PATCH /users/2 
+Host: localhost:8080 
+Content-Type: application/json
+
+{
+  name: "faisal"
+}

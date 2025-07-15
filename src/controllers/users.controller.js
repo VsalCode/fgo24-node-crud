@@ -81,3 +81,35 @@ exports.deleteUser = function (req, res) {
     message: `success to delete user with id: ${id} !`,
   });
 };
+
+/**
+ * @param {import("express").Request} req
+ * @param {import("express").Response} res
+ * @returns
+ */
+exports.updateUser = function (req, res) {
+  const { idStr } = req.params;
+  const id = parseInt(idStr);
+
+  const status = userModel.isUserIdExist(id, req.body);
+  if (!status) {
+    return res.status(http.HTTP_STATUS_BAD_REQUEST).json({
+      success: false,
+      message: `user with id: ${id} doesnt exist!`,
+    });
+  }
+
+  const isUpdated = userModel.updateUserById(id)
+  if (!isUpdated) {
+    return res.status(http.HTTP_STATUS_INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: `failed to updated user with id: ${id} !`,
+    });
+  }
+
+  return res.status(http.HTTP_STATUS_OK).json({
+    success: true,
+    message: `success to updated user with id: ${id} !`,
+  });
+
+};
