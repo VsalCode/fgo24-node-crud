@@ -1,20 +1,20 @@
-const Users = [];
+const users = [];
 
-exports.showAllUsers = function () {
-  return Users;
+function showAllUsers() {
+  return users;
 };
 
-exports.isEmailAvailable = function (req) {
-  const notAvailable = Users.some((user) => user.email == req.email);
+function isEmailAvailable(req) {
+  const notAvailable = users.some((user) => user.email == req.email);
   if (notAvailable) {
     return false;
   }
   return true;
 };
 
-exports.createNewUser = function (req) {
-  Users.push({
-    id: Users.length + 1,
+function createNewUser(req) {
+  users.push({
+    id: users.length + 1,
     name: req.name,
     email: req.email,
     password: req.password,
@@ -22,23 +22,23 @@ exports.createNewUser = function (req) {
   return true;
 };
 
-exports.getUserIndex = function(userId){
-  let idx = Users.findIndex((user) => {
+function getUserIndex(userId){
+  let idx = users.findIndex((user) => {
     return user.id == userId;
   });
   return idx
 }
 
-exports.deleteUserById = function (idx) {
-  Users.splice(idx, 1)
+function deleteUserById(idx) {
+  users.splice(idx, 1)
   return true;
 };
 
-exports.updateUserById = function (idx, req) {
+function updateUserById(idx, req) {
   
-  let oldName = Users[idx].name
-  let oldEmail = Users[idx].email
-  let oldPassword = Users[idx].password
+  let oldName = users[idx].name
+  let oldEmail = users[idx].email
+  let oldPassword = users[idx].password
   
   let newEmail = oldEmail
   let newName = oldName
@@ -55,9 +55,19 @@ exports.updateUserById = function (idx, req) {
     newPassword = req.password
   }
 
-  Users[idx].name = newName
-  Users[idx].email = newEmail
-  Users[idx].password = newPassword
+  users[idx].name = newName
+  users[idx].email = newEmail
+  users[idx].password = newPassword
 
   return true;
 };
+
+module.exports = {
+  users,
+  showAllUsers,
+  isEmailAvailable,
+  createNewUser,
+  getUserIndex,
+  deleteUserById,
+  updateUserById
+}
