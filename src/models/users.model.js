@@ -4,21 +4,15 @@ exports.showAllUsers = function () {
   return Users;
 };
 
-exports.handleNewUser = function (req) {
-  if (Users.length != 0) {
-    Users.forEach((x) => {
-      if (x.email == req.email && x.password == req.password) {
-        Users.push({
-          id: Users.length + 1,
-          name: req.name,
-          email: req.email,
-          password: req.password,
-        });
-        return true;
-      }
-      return false;
-    });
-  } else {
+exports.isEmailAvailable = function(req){
+  const notAvailable =  Users.some(user => user.email == req.email)
+  if (notAvailable){
+    return false
+  }
+  return true
+}
+
+exports.createNewUser = function(req) {
     Users.push({
       id: Users.length + 1,
       name: req.name,
@@ -26,16 +20,23 @@ exports.handleNewUser = function (req) {
       password: req.password,
     });
     return true;
-  }
 };
 
-exports.handleDeleteUser = function (id) {
-  const exist = Users.some((x) => x.id == id);
-
-  if (exist) {
-    let idx = id - 1;
-    delete Users[idx];
-    return true;
+exports.isUserIdExist = function(idParams){
+  const exist = Users.some(user => user.id == idParams )
+  if(exist) {
+    return true
   }
-  return false;
-};
+  return false
+}
+
+exports.deleteUserById = function(id){
+  let idx = id - 1
+
+  if(idx < 0){
+    return false
+  }
+
+  delete Users[idx]
+  return true
+}
