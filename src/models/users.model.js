@@ -22,41 +22,42 @@ exports.createNewUser = function (req) {
   return true;
 };
 
-exports.isUserIdExist = function (idParams) {
-  const exist = Users.some((user) => user.id == idParams);
-  if (exist) {
-    return true;
-  }
-  return false;
-};
-
-exports.deleteUserById = function (id) {
+exports.getUserIndex = function(userId){
   let idx = Users.findIndex((user) => {
-    return user.id == id;
+    return user.id == userId;
   });
+  return idx
+}
 
-  if(!idx) {
-    return false;
-  }
-
+exports.deleteUserById = function (idx) {
   Users.splice(idx, 1)
   return true;
 };
 
-exports.updateUserById = function (id, req) {
-  let idx = Users.findIndex((user) => {
-    return user.id == id;
-  });
+exports.updateUserById = function (idx, req) {
+  
+  let oldName = Users[idx].name
+  let oldEmail = Users[idx].email
+  let oldPassword = Users[idx].password
+  
+  let newEmail = oldEmail
+  let newName = oldName
+  let newPassword = oldPassword
 
-  if (req.name != "") {
-    Users[idx].name = req.name;
+  if (req.name != "" || req.name != undefined) {
+    newName = req.name
   }
-  if (req.email != "") {
-    Users[idx].email = req.email;
+
+  if (req.email != "" || req.email != undefined) {
+    newEmail = req.email
   }
-  if (req.password != "") {
-    Users[idx].password = req.password;
+  if (req.password != "" || req.password != undefined ) {
+    newPassword = req.password
   }
+
+  Users[idx].name = newName
+  Users[idx].email = newEmail
+  Users[idx].password = newPassword
 
   return true;
 };

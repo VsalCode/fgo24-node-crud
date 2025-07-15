@@ -8,21 +8,21 @@ Host: localhost:8080
 Content-Type: application/json
 
 {
-  "name": "user2",
-  "email": "user2@gmail.com",
+  "name": "user",
+  "email": "user@gmail.com",
   "password": "user123"
 }
 
 ###
-DELETE /users/3 
+DELETE /users/1 
 Host: localhost:8080 
 Content-Type: application/json
 
 ###
-PATCH /users/2 
+PATCH /users/1
 Host: localhost:8080 
 Content-Type: application/json
 
 {
-  name: "faisal"
+  "name": "hari"
 }

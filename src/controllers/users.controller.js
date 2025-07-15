@@ -60,15 +60,15 @@ exports.deleteUser = function (req, res) {
   const { idStr } = req.params;
   const id = parseInt(idStr);
 
-  const status = userModel.isUserIdExist(id);
-  if (!status) {
+  const index = userModel.getUserIndex(id);
+  if (index == -1) {
     return res.status(http.HTTP_STATUS_BAD_REQUEST).json({
       success: false,
       message: `user with id: ${id} doesnt exist!`,
     });
   }
 
-  const isDeleted = userModel.deleteUserById(id);
+  const isDeleted = userModel.deleteUserById(index);
   if (!isDeleted) {
     return res.status(http.HTTP_STATUS_INTERNAL_SERVER_ERROR).json({
       success: false,
@@ -91,15 +91,19 @@ exports.updateUser = function (req, res) {
   const { idStr } = req.params;
   const id = parseInt(idStr);
 
-  const status = userModel.isUserIdExist(id, req.body);
-  if (!status) {
+  console.log(idStr);
+  console.log(id);
+  console.log(req.body);
+
+  const index = userModel.getUserIndex(id);
+  if (index == -1) {
     return res.status(http.HTTP_STATUS_BAD_REQUEST).json({
       success: false,
       message: `user with id: ${id} doesnt exist!`,
     });
   }
 
-  const isUpdated = userModel.updateUserById(id)
+  const isUpdated = userModel.updateUserById(index, req.body)
   if (!isUpdated) {
     return res.status(http.HTTP_STATUS_INTERNAL_SERVER_ERROR).json({
       success: false,
