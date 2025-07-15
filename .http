@@ -1,0 +1,14 @@
+GET /users
+Host: localhost:8080 
+Content-Type: application/json
+
+###
+POST /users 
+Host: localhost:8080 
+Content-Type: application/json
+
+{
+  "name": "user",
+  "email": "user@gmail.com",
+  "password": "user123"
+}
