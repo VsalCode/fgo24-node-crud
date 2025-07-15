@@ -19,7 +19,7 @@ Content-Type: application/json
 }
 
 ###
-GET /users
+GET /users?search=
 Host: localhost:8080 
 Content-Type: application/json
 
@@ -29,9 +29,9 @@ Host: localhost:8080
 Content-Type: application/json
 
 {
-  "name": "user",
-  "email": "user@gmail.com",
-  "password": "user123"
+  "name": "joko",
+  "email": "joko@gmail.com",
+  "password": "joko123"
 }
 
 ###

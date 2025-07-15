@@ -5,20 +5,21 @@ const userModel = require("../models/users.model");
  * @param {import("express").Request} req
  * @param {import("express").Response} res
  */
-exports.listAllUsers = function (_, res) {
-  const users = userModel.showAllUsers();
+exports.listAllUsers = function (req, res) {
+  const query = req.query.search;
+  const users = userModel.findUserByName(query);
 
-  if (users) {
-    return res.status(http.HTTP_STATUS_OK).json({
-      success: true,
-      message: " success to show list all users!",
-      results: users,
+  if (!users) {
+    return res.status(http.HTTP_STATUS_INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: "failed to show list all users!",
     });
   }
 
-  return res.status(http.HTTP_STATUS_INTERNAL_SERVER_ERROR).json({
-    success: false,
-    message: "failed to show list all users!",
+  return res.status(http.HTTP_STATUS_OK).json({
+    success: true,
+    message: " success to show list all users!",
+    results: users,
   });
 };
 
@@ -103,7 +104,7 @@ exports.updateUser = function (req, res) {
     });
   }
 
-  const isUpdated = userModel.updateUserById(index, req.body)
+  const isUpdated = userModel.updateUserById(index, req.body);
   if (!isUpdated) {
     return res.status(http.HTTP_STATUS_INTERNAL_SERVER_ERROR).json({
       success: false,
@@ -115,5 +116,4 @@ exports.updateUser = function (req, res) {
     success: true,
     message: `success to updated user with id: ${id} !`,
   });
-
 };

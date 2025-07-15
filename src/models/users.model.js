@@ -1,7 +1,8 @@
 const users = [];
 
-function showAllUsers() {
-  return users;
+function findUserByName(query) {
+  let filtered = users.filter(x => x.name.includes(query))
+  return filtered;
 };
 
 function isEmailAvailable(req) {
@@ -64,7 +65,7 @@ function updateUserById(idx, req) {
 
 module.exports = {
   users,
-  showAllUsers,
+  findUserByName,
   isEmailAvailable,
   createNewUser,
   getUserIndex,
