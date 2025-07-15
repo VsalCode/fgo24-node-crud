@@ -1,3 +1,24 @@
+POST /auth/register 
+Host: localhost:8080 
+Content-Type: application/json
+
+{
+  "name": "koda",
+  "email": "koda@gmail.com",
+  "password": "koda123"
+}
+
+###
+POST /auth/login 
+Host: localhost:8080 
+Content-Type: application/json
+
+{
+  "email": "koda@gmail.com",
+  "password": "koda123"
+}
+
+###
 GET /users
 Host: localhost:8080 
 Content-Type: application/json

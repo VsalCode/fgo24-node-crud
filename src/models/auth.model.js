@@ -1,11 +1,11 @@
 const { users } = require("./users.model")
 
 function validateLogin(req) {
-  const notAvailable = users.some((user) => user.email == req.email);
-  if (notAvailable) {
-    return false;
+  const exist = users.some((user) => user.email == req.email);
+  if (exist) {
+    return true;
   }
-  return true;
+  return false;
 };
 
 module.exports = {
