@@ -30,6 +30,8 @@ exports.listAllUsers = function(_, res){
 exports.addNewUser = function(req, res){
   const status = userModel.handleNewUser(req.body);
 
+  
+
   if(!status){
     return res.status(http.HTTP_STATUS_BAD_REQUEST).json({
       success: false,
@@ -40,5 +42,29 @@ exports.addNewUser = function(req, res){
   return res.status(http.HTTP_STATUS_CREATED).json({
       success: true,
       message: "new user added successfully!"
+    });
+}
+
+/**
+ * @param {import("express").Request} req 
+ * @param {import("express").Response} res 
+ * @returns 
+ */
+exports.deleteUser = function(req, res){
+  const { idStr } = req.params;
+  const id = parseInt(idStr)
+
+  const status = userModel.handleDeleteUser(id)
+
+  if(!status){
+    return res.status(http.HTTP_STATUS_BAD_REQUEST).json({
+      success: false,
+      message: `failed to delete user with id: ${id} !`
+    });  
+  }
+
+  return res.status(http.HTTP_STATUS_CREATED).json({
+      success: true,
+      message: `success to delete user with id: ${id} !`
     });
 }
