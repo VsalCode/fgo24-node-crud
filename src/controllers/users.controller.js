@@ -6,20 +6,21 @@ const userModel = require("../models/users.model");
  * @param {import("express").Response} res
  */
 exports.listAllUsers = function (req, res) {
-  const {search, sortby} = req.query;
+  const { search, sortby, page = 1, pageSize = 10 } = req.query;
 
-  const users = userModel.findUserByName(search, sortby);
-  if (!users) {
-    return res.status(http.HTTP_STATUS_INTERNAL_SERVER_ERROR).json({
-      success: false,
-      message: "failed to show list all users!",
-    });
-  }
+  const pageNum = Math.max(1, parseInt(page)) || 1;
+  const pageSizeNum = Math.max(1, parseInt(pageSize)) || 10;
+
+  const result = userModel.findUserByName(search, sortby, pageNum, pageSizeNum);
 
   return res.status(http.HTTP_STATUS_OK).json({
     success: true,
-    message: " success to show list all users!",
-    results: users,
+    message: "Success to show list all users!",
+    results: result.data,
+    page: pageNum,
+    pageSize: pageSizeNum,
+    total: result.total,
+    totalPages: result.totalPages,
   });
 };
 

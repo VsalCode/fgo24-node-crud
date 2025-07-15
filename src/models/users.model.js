@@ -1,21 +1,31 @@
 const users = [];
 
-function findUserByName(query, sort) {
-  let filtered = users  
+function findUserByName(query, sort, page = 1, pageSize = 10) {
+  const pageNum = Math.max(1, parseInt(page)) || 1;
+  const pageSizeNum = Math.max(1, parseInt(pageSize)) || 10;
+
+  let filtered = users.filter((user) =>
+    user.name.toLowerCase().includes((query || "").toLowerCase())
+  );
+
   switch (sort) {
     case "name":
-      filtered = users.filter((x) => x.name.includes(query));
-      filtered.sort((x, y) => x.name.localeCompare(y.name) )
+      filtered.sort((a, b) => a.name.localeCompare(b.name));
       break;
     case "email":
-      filtered = users.filter((x) => x.name.includes(query));
-      filtered.sort((x, y) => x.email.localeCompare(y.email) )
-      break;
-    default:
-      filtered = users.filter((x) => x.name.includes(query));
+      filtered.sort((a, b) => a.email.localeCompare(b.email));
       break;
   }
-  return filtered
+
+  const startIndex = (pageNum - 1) * pageSizeNum;
+  const endIndex = Math.min(startIndex + pageSizeNum, filtered.length);
+  const paginated = filtered.slice(startIndex, endIndex);
+
+  return {
+    data: paginated,
+    total: filtered.length,
+    totalPages: Math.ceil(filtered.length / pageSizeNum),
+  };
 }
 
 function isEmailAvailable(req) {
