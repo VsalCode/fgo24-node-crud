@@ -92,9 +92,9 @@ exports.updateUser = function (req, res) {
   const { idStr } = req.params;
   const id = parseInt(idStr);
 
-  console.log(idStr);
-  console.log(id);
-  console.log(req.body);
+  // console.log(idStr);
+  // console.log(id);
+  // console.log(req.body);
 
   const index = userModel.getUserIndex(id);
   if (index == -1) {
@@ -116,4 +116,28 @@ exports.updateUser = function (req, res) {
     success: true,
     message: `success to updated user with id: ${id} !`,
   });
+};
+
+/**
+ * @param {import("express").Request} req
+ * @param {import("express").Response} res
+ * @returns
+ */
+exports.userDetail = function (req, res) {
+  const { idStr } = req.params;
+  const id = parseInt(idStr);
+
+  const index = userModel.getUserIndex(id);
+  if (index == -1) {
+    return res.status(http.HTTP_STATUS_BAD_REQUEST).json({
+      success: false,
+      message: `user with id: ${id} doesnt exist!`,
+    });
+  }
+  
+   return res.status(http.HTTP_STATUS_BAD_REQUEST).json({
+      success: true,
+      message: `retrieve user with id: ${id} successfully!`,
+      results: userModel.users[index]
+    });
 };
