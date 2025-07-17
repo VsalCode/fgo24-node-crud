@@ -29,7 +29,7 @@ Host: localhost:8080
 Content-Type: multipart/form-data; boundary=----WebkitBoundary
 
 ------WebkitBoundary
-Content-Disposition: form-data; name="name"
+Content-Disposition: form-data; name="fullname"
 
 guest
 ------WebkitBoundary
