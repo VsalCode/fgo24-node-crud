@@ -118,7 +118,7 @@ exports.updateUser = function (req, res) {
     profile: req?.file?.filename || null
   }
 
-  const isUpdated = userModel.updateUserById(index, sendedFormat);
+  const isUpdated = userModel.updateUserByIndex(index, sendedFormat);
   if (!isUpdated) {
     return res.status(http.HTTP_STATUS_INTERNAL_SERVER_ERROR).json({
       success: false,

@@ -1,5 +1,5 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require('fs').promises;
+const path = require("node:path");
 
 const users = [];
 
@@ -74,50 +74,31 @@ function deleteUserById(idx) {
   return true;
 }
 
-function updateUserById(idx, req) {
-  
-  let oldName = users[idx].name;
-  let oldEmail = users[idx].email;
-  let oldPassword = users[idx].password;
+async function updateUserByIndex(idx, req) {
   let oldProfilePicture = users[idx].profile;
 
-  let newEmail = oldEmail;
-  let newName = oldName;
-  let newPassword = oldPassword;
-  let newProfilePicture = oldProfilePicture;
-
-  if (req.name != "" && req.name != undefined) {
-    newName = req.name;
-  }
-
-  if (req.email != "" && req.email != undefined) {
-    newEmail = req.email;
-  }
-
-  if (req.password != "" && req.password != undefined) {
-    newPassword = req.password;
-  }
-
-  if (req.file) {
-    newProfilePicture = req.file.filename;
+  if (req.profile) {
+    const newProfilePicture = req.profile;
 
     if (oldProfilePicture) {
       const oldFilePath = path.join('uploads', 'profile-picture', oldProfilePicture);
       
-      fs.unlink(oldFilePath, (err) => {
-        if (err) {
-          console.error('Gagal menghapus file lama:', err);
-        } else {
-          console.log('File lama berhasil dihapus');
-        }
-      });
+      try {
+        await fs.access(oldFilePath);
+        await fs.unlink(oldFilePath);
+        console.log('File lama berhasil dihapus');
+      } catch (err) {
+        console.log("gagal hapus image")
+        console.log(err.message)
+      }
     }
+
+    users[idx].profile = newProfilePicture;
   }
 
-  users[idx].name = newName;
-  users[idx].email = newEmail;
-  users[idx].password = newPassword;
-  users[idx].profile = newProfilePicture;
+  users[idx].name = req.name ;
+  users[idx].email = req.email ;
+  users[idx].password = req.password;
 
   return true;
 }
@@ -130,5 +111,5 @@ module.exports = {
   createNewUser,
   getUserIndex,
   deleteUserById,
-  updateUserById,
+  updateUserByIndex,
 };

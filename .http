@@ -68,7 +68,7 @@ guest123
 Content-Disposition: form-data; name="picture"; filename="any.png"
 Content-Type: image/png
 
-< ./dino.png
+< ./newDino.png
 ------WebkitBoundary--
 
 ###
