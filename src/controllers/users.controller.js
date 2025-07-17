@@ -65,36 +65,35 @@ exports.addNewUser = async function (req, res) {
   }
 };
 
-// /**
-//  * @param {import("express").Request} req
-//  * @param {import("express").Response} res
-//  * @returns
-//  */
-// exports.deleteUser = function (req, res) {
-//   const { idStr } = req.params;
-//   const id = parseInt(idStr);
+/**
+ * @param {import("express").Request} req
+ * @param {import("express").Response} res
+ * @returns
+ */
+exports.deleteUser = async function (req, res) {
+  try {
+    const { idStr } = req.params;
+    const id = parseInt(idStr);
+    
+    const status = await user.destroy({
+      where: {id: id}
+    })
 
-//   const index = userModel.getUserIndex(id);
-//   if (index == -1) {
-//     return res.status(http.HTTP_STATUS_BAD_REQUEST).json({
-//       success: false,
-//       message: `user with id: ${id} doesnt exist!`,
-//     });
-//   }
+    console.log(status);
 
-//   const isDeleted = userModel.deleteUserById(index);
-//   if (!isDeleted) {
-//     return res.status(http.HTTP_STATUS_INTERNAL_SERVER_ERROR).json({
-//       success: false,
-//       message: `failed to delete user with id: ${id} !`,
-//     });
-//   }
+    return res.status(http.HTTP_STATUS_OK).json({
+      success: true,
+      message: `success to delete user with id ${id}!`
+    });
 
-//   return res.status(http.HTTP_STATUS_OK).json({
-//     success: true,
-//     message: `success to delete user with id: ${id} !`,
-//   });
-// };
+  } catch(err) {
+    return res.status(http.HTTP_STATUS_INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: "failed to delete user",
+      errors: err.message,
+    });
+  }
+};
 
 // /**
 //  * @param {import("express").Request} req
