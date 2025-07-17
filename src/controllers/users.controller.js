@@ -135,26 +135,40 @@ exports.updateUser = async function (req, res) {
   }
 };
 
-// /**
-//  * @param {import("express").Request} req
-//  * @param {import("express").Response} res
-//  * @returns
-//  */
-// exports.userDetail = function (req, res) {
-//   const { idStr } = req.params;
-//   const id = parseInt(idStr);
+/**
+ * @param {import("express").Request} req
+ * @param {import("express").Response} res
+ * @returns
+ */
+exports.userDetail = async function (req, res) {
+  try{
+    const { idStr } = req.params;
+    const id = parseInt(idStr);
 
-//   const index = userModel.getUserIndex(id);
-//   if (index == -1) {
-//     return res.status(http.HTTP_STATUS_BAD_REQUEST).json({
-//       success: false,
-//       message: `user with id: ${id} doesnt exist!`,
-//     });
-//   }
+    const data = await user.findAll({
+      where: { id: id }
+    })
 
-//   return res.status(http.HTTP_STATUS_BAD_REQUEST).json({
-//     success: true,
-//     message: `retrieve user with id: ${id} successfully!`,
-//     results: userModel.users[index],
-//   });
-// };
+    console.log(data)
+
+    if(data != []){
+      return res.status(http.HTTP_STATUS_BAD_REQUEST).json({
+        success: false,
+        message: "user doesnt exist!"
+      })  
+    }
+
+    return res.status(http.HTTP_STATUS_OK).json({
+      success: true,
+      message: "success to get user detail!",
+      results: data
+    })
+
+  } catch(err){
+    return res.status(http.HTTP_STATUS_INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: "failed to retrieve user detail!",
+      errors: err.message
+    }) 
+  }
+};
