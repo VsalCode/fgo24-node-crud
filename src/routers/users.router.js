@@ -22,7 +22,7 @@ const profilePicture = multer({ storage })
 userRouter.get("/", userController.listAllUsers );
 userRouter.post("/", profilePicture.single("picture"), userController.addNewUser );
 userRouter.delete("/:idStr", userController.deleteUser );
-userRouter.patch("/:idStr", userController.updateUser );
+userRouter.patch("/:idStr", profilePicture.single("picture"), userController.updateUser );
 userRouter.get("/:idStr", userController.userDetail );
 
 module.exports = userRouter;

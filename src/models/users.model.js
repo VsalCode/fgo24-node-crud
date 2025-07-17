@@ -1,3 +1,6 @@
+const fs = require('fs');
+const path = require('path');
+
 const users = [];
 
 function findUserByName(query, sort, page = 1, pageSize = 10) {
@@ -70,31 +73,53 @@ function deleteUserById(idx) {
 }
 
 function updateUserById(idx, req) {
+  
   let oldName = users[idx].name;
   let oldEmail = users[idx].email;
   let oldPassword = users[idx].password;
+  let oldProfilePicture = users[idx].profile;
 
   let newEmail = oldEmail;
   let newName = oldName;
   let newPassword = oldPassword;
+  let newProfilePicture = oldProfilePicture;
 
-  if (req.name != "" || req.name != undefined) {
+  if (req.name != "" && req.name != undefined) {
     newName = req.name;
   }
 
-  if (req.email != "" || req.email != undefined) {
+  if (req.email != "" && req.email != undefined) {
     newEmail = req.email;
   }
-  if (req.password != "" || req.password != undefined) {
+
+  if (req.password != "" && req.password != undefined) {
     newPassword = req.password;
+  }
+
+  if (req.file) {
+    newProfilePicture = req.file.filename;
+
+    if (oldProfilePicture) {
+      const oldFilePath = path.join('uploads', 'profile-picture', oldProfilePicture);
+      
+      fs.unlink(oldFilePath, (err) => {
+        if (err) {
+          console.error('Gagal menghapus file lama:', err);
+        } else {
+          console.log('File lama berhasil dihapus');
+        }
+      });
+    }
   }
 
   users[idx].name = newName;
   users[idx].email = newEmail;
   users[idx].password = newPassword;
+  users[idx].profile = newProfilePicture;
 
   return true;
 }
+
 
 module.exports = {
   users,

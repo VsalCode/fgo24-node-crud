@@ -102,10 +102,6 @@ exports.updateUser = function (req, res) {
   const { idStr } = req.params;
   const id = parseInt(idStr);
 
-  // console.log(idStr);
-  // console.log(id);
-  // console.log(req.body);
-
   const index = userModel.getUserIndex(id);
   if (index == -1) {
     return res.status(http.HTTP_STATUS_BAD_REQUEST).json({
@@ -114,7 +110,15 @@ exports.updateUser = function (req, res) {
     });
   }
 
-  const isUpdated = userModel.updateUserById(index, req.body);
+  const { name, email, password } = req.body
+  const sendedFormat = {
+    name: name || email.split("@")[0],
+    email: email,
+    password: password,
+    profile: req?.file?.filename || null
+  }
+
+  const isUpdated = userModel.updateUserById(index, sendedFormat);
   if (!isUpdated) {
     return res.status(http.HTTP_STATUS_INTERNAL_SERVER_ERROR).json({
       success: false,
