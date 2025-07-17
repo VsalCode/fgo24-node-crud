@@ -40,7 +40,7 @@ function isEmailAvailable(req) {
 }
 
 function createNewUser(req) {
-  if (req.profile != null) {
+  if (req.profile) {
     users.push({
       id: users.length + 1,
       name: req.name,
@@ -48,6 +48,8 @@ function createNewUser(req) {
       password: req.password,
       profile: req.profile,
     });
+
+    return true
   }
 
    users.push({
