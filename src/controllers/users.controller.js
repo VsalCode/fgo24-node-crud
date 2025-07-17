@@ -53,10 +53,9 @@ exports.addNewUser = async function (req, res) {
       message: "new user added successfully!",
       results: createdUser,
     });
-
   } catch (err) {
     console.log(err);
-    
+
     return res.status(http.HTTP_STATUS_INTERNAL_SERVER_ERROR).json({
       success: false,
       message: "failed to add new user!",
@@ -74,19 +73,18 @@ exports.deleteUser = async function (req, res) {
   try {
     const { idStr } = req.params;
     const id = parseInt(idStr);
-    
+
     const status = await user.destroy({
-      where: {id: id}
-    })
+      where: { id: id },
+    });
 
     console.log(status);
 
     return res.status(http.HTTP_STATUS_OK).json({
       success: true,
-      message: `success to delete user with id ${id}!`
+      message: `success to delete user with id ${id}!`,
     });
-
-  } catch(err) {
+  } catch (err) {
     return res.status(http.HTTP_STATUS_INTERNAL_SERVER_ERROR).json({
       success: false,
       message: "failed to delete user",
@@ -95,44 +93,47 @@ exports.deleteUser = async function (req, res) {
   }
 };
 
-// /**
-//  * @param {import("express").Request} req
-//  * @param {import("express").Response} res
-//  * @returns
-//  */
-// exports.updateUser = function (req, res) {
-//   const { idStr } = req.params;
-//   const id = parseInt(idStr);
+/**
+ * @param {import("express").Request} req
+ * @param {import("express").Response} res
+ * @returns
+ */
+exports.updateUser = async function (req, res) {
+  try {
+    const { idStr } = req.params;
+    const id = parseInt(idStr);
+    const { fullname, email, password } = req.body;
 
-//   const index = userModel.getUserIndex(id);
-//   if (index == -1) {
-//     return res.status(http.HTTP_STATUS_BAD_REQUEST).json({
-//       success: false,
-//       message: `user with id: ${id} doesnt exist!`,
-//     });
-//   }
+    const updatedUser = await user.update({
+      fullname: fullname || email.split("@")[0],
+      email: email,
+      password: password,
+      picture: req?.file?.filename || null,
+    }, {
+      where: { id: id },
+    })
 
-//   const { name, email, password } = req.body
-//   const sendedFormat = {
-//     name: name || email.split("@")[0],
-//     email: email,
-//     password: password,
-//     profile: req?.file?.filename || null
-//   }
+    if(updatedUser == 0){
+      return res.status(http.HTTP_STATUS_BAD_REQUEST).json({
+        success: false,
+        message: "user doesnt exist!",
+      })  
+    }
 
-//   const isUpdated = userModel.updateUserByIndex(index, sendedFormat);
-//   if (!isUpdated) {
-//     return res.status(http.HTTP_STATUS_INTERNAL_SERVER_ERROR).json({
-//       success: false,
-//       message: `failed to updated user with id: ${id} !`,
-//     });
-//   }
+    return res.status(http.HTTP_STATUS_OK).json({
+      success: true,
+      message: "user updated successfully!",
+      results: updatedUser
+    })
 
-//   return res.status(http.HTTP_STATUS_OK).json({
-//     success: true,
-//     message: `success to updated user with id: ${id} !`,
-//   });
-// };
+  } catch (err) {
+    return res.status(http.HTTP_STATUS_INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: "failed to update user!",
+      errors: err.message
+    })
+  }
+};
 
 // /**
 //  * @param {import("express").Request} req

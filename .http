@@ -48,12 +48,12 @@ Content-Type: image/png
 ------WebkitBoundary--
 
 ###
-PATCH /users/1
+PATCH /users/2
 Host: localhost:8080 
 Content-Type: multipart/form-data; boundary=----WebkitBoundary
 
 ------WebkitBoundary
-Content-Disposition: form-data; name="name"
+Content-Disposition: form-data; name="fullname"
 
 guestNew
 ------WebkitBoundary
