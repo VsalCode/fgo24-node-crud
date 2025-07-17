@@ -25,14 +25,28 @@ Content-Type: application/json
 
 ###
 POST /users
-Host: localhost:8080 
-Content-Type: application/json
+Host: localhost:8080
+Content-Type: multipart/form-data; boundary=----WebkitBoundary
 
-{
-  "name": "joko",
-  "email": "joko@gmail.com",
-  "password": "joko123"
-}
+------WebkitBoundary
+Content-Disposition: form-data; name="name"
+
+guest
+------WebkitBoundary
+Content-Disposition: form-data; name="email"
+
+guest@gmail.com
+------WebkitBoundary
+Content-Disposition: form-data; name="password"
+
+guest123
+------WebkitBoundary
+Content-Disposition: form-data; name="picture"; filename="any.png"
+Content-Type: image/png
+
+< ./dino.png
+------WebkitBoundary--
+
 
 ###
 GET /users/2 

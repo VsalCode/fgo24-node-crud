@@ -37,12 +37,23 @@ function isEmailAvailable(req) {
 }
 
 function createNewUser(req) {
-  users.push({
-    id: users.length + 1,
-    name: req.name,
-    email: req.email,
-    password: req.password,
-  });
+  if (req.profile != null) {
+    users.push({
+      id: users.length + 1,
+      name: req.name,
+      email: req.email,
+      password: req.password,
+      profile: req.profile,
+    });
+  }
+
+   users.push({
+      id: users.length + 1,
+      name: req.name,
+      email: req.email,
+      password: req.password
+    });
+
   return true;
 }
 

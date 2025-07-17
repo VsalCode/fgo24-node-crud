@@ -30,6 +30,8 @@ exports.listAllUsers = function (req, res) {
  * @returns
  */
 exports.addNewUser = function (req, res) {
+  const { name, email, password } = req.body
+  
   const isAvailable = userModel.isEmailAvailable(req.body);
   if (!isAvailable) {
     return res.status(http.HTTP_STATUS_BAD_REQUEST).json({
@@ -38,7 +40,14 @@ exports.addNewUser = function (req, res) {
     });
   }
 
-  const status = userModel.createNewUser(req.body);
+  const sendedFormat = {
+    name: name || email.split("@")[0],
+    email: email,
+    password: password,
+    profile: req?.file?.filename || null
+  }
+
+  const status = userModel.createNewUser(sendedFormat);
 
   if (!status) {
     return res.status(http.HTTP_STATUS_INTERNAL_SERVER_ERROR).json({
